@@ -1,99 +1,214 @@
-{%extends "layout.html"%} {%block content%}
-<div class="container py-4 h-100">
-  <div class="row d-flex justify-content-center align-items-center h-100">
-    <div class="col-5">
-      <div class="card p-4 " style="border-radius: 15px;">
-        <div class="d-flex text-black">
-          <div class="flex-shrink-0">
-            <img src="{{url_for(
-              'static', filename='profile_images/' + current_user.profile_image)}}"
-              alt="Profile image" class="img-fluid"
-              style="height:180px; width: 180px; border-radius: 10px;">
-          </div>
-          <div class="col">
-            <div class="row flex-grow-1 ms-3 mb-3">
-              <h5 class="mb-1">#{{current_user.id}} {{current_user.username}}</h5>
-              <p class="mb-2 pb-1" style="color: #2b2a2a;">{{current_user.email}}</p>
-            </div>
-            <div class="row flex-grow-1 ms-3">
-              <div class="d-grid gap-3">
-                <form action="{{url_for('users.delete_conversation')}}" method="POST">
-                  <button type="submit" class="btn btn-outline-danger btn-sm">
-                    Delete Conversation
-                  </button>
-                </form>
-                <!-- Button trigger modal -->
-                <div>
-                  <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    Delete Account
-                  </button>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Delete Account?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        Are you sure you want to delete your account? This action cannot be undone.
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <form action="{{url_for('users.delete_account')}}" method="POST">
-                          <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+{% extends "layout.html" %}
+{% block content %}
+<style>
+  body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
+  }
+  .account-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+  .profile-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .profile-image {
+    height: 180px;
+    width: 180px;
+    border-radius: 1rem;
+    object-fit: cover;
+    border: 3px solid #0dcaf0;
+    box-shadow: 0 4px 24px rgba(13, 110, 253, 0.12);
+    transition: transform 0.3s ease;
+  }
+  .profile-image:hover {
+    transform: scale(1.02);
+  }
+  .profile-info {
+    padding-left: 2rem;
+  }
+  .profile-username {
+    font-family: 'Merriweather', serif;
+    color: #0d6efd;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .profile-email {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  .account-form {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    padding: 2rem;
+  }
+  .form-title {
+    font-family: 'Merriweather', serif;
+    color: #0d6efd;
+    font-size: 2rem;
+    border-bottom: 2px solid #0dcaf0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+  .form-control {
+    border-radius: 0.75rem;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+  }
+  .form-control:focus {
+    border-color: #0dcaf0;
+    box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+  }
+  .btn-account {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-account:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+  }
+  .modal-content {
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  }
+  .modal-header {
+    border-bottom: 1px solid #0dcaf0;
+    padding: 1.5rem;
+  }
+  .modal-title {
+    font-family: 'Merriweather', serif;
+    color: #0d6efd;
+  }
+  .modal-body {
+    padding: 1.5rem;
+    color: #2c3e50;
+  }
+  .modal-footer {
+    border-top: 1px solid #0dcaf0;
+    padding: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .account-container {
+      margin: 2rem auto;
+    }
+    .profile-card {
+      padding: 1.5rem;
+    }
+    .profile-info {
+      padding-left: 1rem;
+      margin-top: 1rem;
+    }
+    .form-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>
+
+<div class="account-container">
+  <div class="profile-card">
+    <div class="d-flex flex-wrap">
+      <div class="flex-shrink-0">
+        <img 
+          src="{{ url_for('static', filename='profile_images/' + current_user.profile_image) }}"
+          alt="Profile image" 
+          class="profile-image"
+        >
+      </div>
+      <div class="profile-info">
+        <h5 class="profile-username">#{{ current_user.id }} {{ current_user.username }}</h5>
+        <p class="profile-email">{{ current_user.email }}</p>
+        <div class="d-flex gap-3">
+          <form action="{{ url_for('users.delete_conversation') }}" method="POST">
+            <button type="submit" class="btn btn-outline-danger btn-account">
+              <i class="bi bi-trash"></i> Delete Conversation
+            </button>
+          </form>
+          <button type="button" class="btn btn-outline-danger btn-account" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <i class="bi bi-person-x"></i> Delete Account
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="account-form">
+    <form method="POST" action="" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="form-title">Account Info</legend>
+        <div class="mb-4">
+          {{ form.username.label(class="form-label") }}
+          {% if form.username.errors %}
+            {{ form.username(class="form-control form-control-lg is-invalid") }}
+            {% for error in form.username.errors %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            {{ form.username(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="mb-4">
+          {{ form.email.label(class="form-label") }}
+          {% if form.email.errors %}
+            {{ form.email(class="form-control form-control-lg is-invalid") }}
+            {% for error in form.email.errors %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            {{ form.email(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="mb-4">
+          {{ form.picture.label(class="form-label") }}
+          {{ form.picture(class="form-control") }}
+          {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+              <div class="text-danger mt-2">{{ error }}</div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info btn-lg btn-account") }}
+      </div>
+    </form>
+  </div>
 </div>
 
-<div class="container-sm px-5">
-  <form method="POST" action="" enctype="multipart/form-data">
-    {{form.hidden_tag()}}
-    <fieldset class="form-group d-grid gap-3">
-      <legend
-        class="fs-1 fw-bold font-monospace border-bottom border-info mb-3 mt-2"
-      >
-        Account Info
-      </legend>
-      <div>
-        {{form.username.label(class="form-control-label")}} {%if
-        form.username.errors%} {{form.username(class="form-control
-        form-control-lg is-invalid")}} {%for error in form.username.errors%}
-        <div class="invalid-feedback">{{error}}</div>
-        {%endfor%} {%else%} {{form.username(class="form-control
-        form-control-lg")}} {%endif%}
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Account?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="form-group">
-        {{form.email.label(class="form-control-label")}} {%if
-        form.email.errors%} {{form.email(class="form-control form-control-lg
-        is-invalid")}} {%for error in form.email.errors%}
-        <div class="invalid-feedback">{{error}}</div>
-        {%endfor%} {%else%} {{form.email(class="form-control form-control-lg")}}
-        {%endif%}
+      <div class="modal-body">
+        Are you sure you want to delete your account? This action cannot be undone.
       </div>
-      <div class="form-group">
-        {{form.picture(class="form-control-file")}}
-        {% if form.picture.errors%}
-            {%for error in form.picture.errors%}
-                <span class="text-danger">{{error}}</div></br>
-            {%endfor%}
-        {%endif%}
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-account" data-bs-dismiss="modal">Close</button>
+        <form action="{{ url_for('users.delete_account') }}" method="POST">
+          <button type="submit" class="btn btn-danger btn-account">Delete</button>
+        </form>
       </div>
-    </fieldset>
-    <div class="form-group">
-      {{form.submit(class="btn btn-outline-info btn-lg my-3")}}
     </div>
-  </form>
+  </div>
 </div>
-{%endblock content%}
+{% endblock content %}

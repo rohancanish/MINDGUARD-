@@ -1,138 +1,196 @@
 {%extends 'layout.html'%} {%block navigation%}{%endblock navigation%} {%block content%}
-<div id="home-container" class="container-fluid d-grid gap-3">
+<style>
+  body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
+  }
+  #home-container {
+    max-width: 600px;
+    margin: 3rem auto 0 auto;
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    padding: 2.5rem 2rem 2rem 2rem;
+    position: relative;
+  }
+  #chatbot-name {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    color: #0d6efd;
+    border-bottom: 2px solid #0dcaf0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .hero-img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    box-shadow: 0 4px 24px rgba(13, 110, 253, 0.12);
+    margin-bottom: 1.5rem;
+    background: #f8fafc;
+  }
+  .btn-main {
+    background: linear-gradient(90deg, #0d6efd 0%, #0dcaf0 100%);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 2rem;
+    padding: 1rem 3rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.08);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .btn-main:hover {
+    background: linear-gradient(90deg, #0dcaf0 0%, #0d6efd 100%);
+    box-shadow: 0 4px 16px rgba(13, 110, 253, 0.18);
+  }
+  .btn-outline-info, .btn-outline-secondary {
+    border-radius: 2rem;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.3s;
+  }
+  .btn-outline-info:hover, .btn-outline-secondary:hover {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.10);
+  }
+  .modal-content {
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    background: #f8fafc;
+  }
+  .modal-title {
+    font-family: 'Merriweather', serif;
+    color: #0d6efd;
+    font-size: 2rem;
+  }
+  .modal-header {
+    border-bottom: none;
+    background: transparent;
+  }
+  .modal-body {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  @media (max-width: 600px) {
+    #home-container {
+      padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    }
+    #chatbot-name {
+      font-size: 2rem;
+    }
+    .btn-main {
+      font-size: 1.1rem;
+      padding: 0.8rem 1.5rem;
+    }
+  }
+</style>
+<div id="home-container" class="container-fluid d-flex flex-column align-items-center gap-3">
   <img
     src="{{url_for('static',filename='images/chatbot.png')}}"
     alt="Mental Health Chatbot Picture"
-    class="rounded-circle border border-secondary mt-3 mx-auto d-block shadow"
-    style="width: 21.875rem; height: 21.875rem"
+    class="hero-img rounded-circle border border-2 border-info shadow"
   />
   <h1
     id="chatbot-name"
-    class="mx-auto my-2 fw-bold font-monospace border-bottom border-info"
   >
-    Mental Health Chatbot
+    MINDGUARD
   </h1>
 
-
-
-        {% if current_user.is_authenticated %}
-        <a
-          id="chat-now-link"
-          class="btn btn-info mx-auto d-block"
-          style="
-            --bs-btn-padding-y: 1.25rem;
-            --bs-btn-padding-x: 5.5rem;
-            --bs-btn-font-size: 2rem;
-            --bs-btn-font-weight: 700;
-          "
-          href="{{url_for('chatbot.chat')}}"
-        >
-          CHAT NOW
-        </a>
-        {% else %}
-        <button
-          id="start-now-link"
-          class="btn btn-info mx-auto d-block"
-          style="
-            --bs-btn-padding-y: 1.25rem;
-            --bs-btn-padding-x: 5.5rem;
-            --bs-btn-font-size: 2rem;
-            --bs-btn-font-weight: 700;
-          "
-          data-bs-toggle="modal"
-          data-bs-target="#entryModal"
-        >
-        LOGIN / REGISTER
-        </button>
-        <div
-          class="modal fade"
-          id="entryModal"
-          tabindex="-1"
-          aria-labelledby="entryModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header border-bottom-0 pb-0">
-                <h1 class="modal-title fw-bold font-monospace lh-sm">
-                  Login / Register
-                </h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col d-flex flex-column align-items-center">
-                    <small class="text-muted">Already Have an Account?</small>
-                    <a
-                      class="btn btn-outline-info btn-lg mt-1"
-                      href="{{url_for('users.login')}}"
-                      >Login Now</a
-                    >
-                  </div>
-                  <div class="col d-flex flex-column align-items-center">
-                    <small class="text-muted">New User? Wohoo</small>
-                    <a
-                      class="btn btn-outline-info btn-lg mt-1"
-                      href="{{url_for('users.register')}}"
-                      >Register Now</a
-                    >
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <div class="modal-header border-bottom-0 pb-0">
-                <h1 class="modal-title fw-bold font-monospace lh-sm">
-                  Or as Guest
-                </h1>
-              </div>
-              <div class="modal-body">
+  {% if current_user.is_authenticated %}
+    <a
+      id="chat-now-link"
+      class="btn btn-main w-100"
+    >
+      <i class="bi bi-chat-dots"></i> Chat Now
+    </a>
+  {% else %}
+    <button
+      id="start-now-link"
+      class="btn btn-main w-100"
+      data-bs-toggle="modal"
+      data-bs-target="#entryModal"
+    >
+      <i class="bi bi-box-arrow-in-right"></i> Login / Register
+    </button>
+    <div
+      class="modal fade"
+      id="entryModal"
+      tabindex="-1"
+      aria-labelledby="entryModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title">Login / Register</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row text-center">
+              <div class="col d-flex flex-column align-items-center mb-3 mb-md-0">
+                <small class="text-muted">Already Have an Account?</small>
                 <a
-                  class="btn btn-outline-info btn-lg d-block"
-                  href="{{url_for('chatbot.chat')}}"
-                  style="--bs-btn-padding-x: 2.5rem"
-                  >Continue</a
+                  class="btn btn-outline-info btn-lg mt-1 w-100"
+                  href="{{url_for('users.login')}}"
                 >
+                  <i class="bi bi-person"></i> Login Now
+                </a>
+              </div>
+              <div class="col d-flex flex-column align-items-center">
+                <small class="text-muted">New User? Wohoo</small>
+                <a
+                  class="btn btn-outline-info btn-lg mt-1 w-100"
+                  href="{{url_for('users.register')}}"
+                >
+                  <i class="bi bi-person-plus"></i> Register Now
+                </a>
               </div>
             </div>
           </div>
+          <hr />
+          <div class="modal-header pt-0">
+            <h1 class="modal-title">Or as Guest</h1>
+          </div>
+          <div class="modal-body">
+            <a
+              class="btn btn-outline-info btn-lg w-100"
+              href="{{url_for('chatbot.chat')}}"
+            >
+              <i class="bi bi-box-arrow-up-right"></i> Continue as Guest
+            </a>
+          </div>
         </div>
-        {%endif%}
-      
+      </div>
+    </div>
+  {% endif %}
 
+  <a
+    href="{{url_for('main.about')}}"
+    id="about-me-link"
+    class="btn btn-outline-info w-100"
+  >
+    <i class="bi bi-info-circle"></i> About Us
+  </a>
+  {% if current_user.is_authenticated %}
     <a
-      href="{{url_for('main.about')}}"
-      id="about-me-link"
-      class="btn btn-outline-info mx-auto d-block"
-      style="
-        --bs-btn-padding-y: 1.25rem;
-        --bs-btn-padding-x: 5.5rem;
-        --bs-btn-font-size: 2rem;
-        --bs-btn-border-width: 0;
-      "
+      href="{{url_for('users.logout')}}"
+      id="logout-link"
+      class="btn btn-outline-secondary w-100"
     >
-      About Us
+      <i class="bi bi-box-arrow-right"></i> Logout
     </a>
-    {%if current_user.is_authenticated %}
-        <a
-          href="{{url_for('users.logout')}}"
-          id="about-me-link"
-          class="btn btn-outline-secondary mx-auto d-block"
-          style="
-            --bs-btn-padding-x: 3.5rem;
-            --bs-btn-font-size: 1rem;
-          "
-        >
-          Logout
-        </a>
-      {%endif%}
-  </div>
-  
-  {%endblock content%}
+  {% endif %}
 </div>
+
+{%endblock content%}
