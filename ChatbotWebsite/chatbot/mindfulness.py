@@ -1,5 +1,5 @@
 import json
-
+  
 # load mindfulness exercises from json file
 with open("ChatbotWebsite/static/mindfulness/mindfulness.json") as file:
     mindfulness_exercises = json.load(file)
