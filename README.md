@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python-Mental-Health-Chatbot(Web-based)
 
 This is my final year project at my university
@@ -58,3 +59,7 @@ python run.py
 ![image](https://github.com/TheanYeeSin/Web-Based-Python-Mental-Health-Chatbot/assets/68727045/f0c138af-2b8f-4d35-b2a7-8c3b70102bea)
 
 ![image](https://github.com/TheanYeeSin/Web-Based-Python-Mental-Health-Chatbot/assets/68727045/556d6e84-f8f0-4480-ab06-d4523895486d)
+=======
+# MINDGUARD-
+This is my personal project MindGuard  🧠  -  A mental health chatbot 
+>>>>>>> e9315723b2b89d8dcdfdc9abf6691221968ab466
