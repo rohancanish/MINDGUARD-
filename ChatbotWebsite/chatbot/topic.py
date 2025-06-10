@@ -1,5 +1,5 @@
 import json
-
+  
 # load topics from json file
 with open("ChatbotWebsite/static/data/topics.json") as file:
     topics = json.load(file)
