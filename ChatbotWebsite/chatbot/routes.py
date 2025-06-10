@@ -6,7 +6,7 @@ from ChatbotWebsite.chatbot.topic import *
 from ChatbotWebsite.chatbot.test import *
 from ChatbotWebsite.chatbot.mindfulness import *
 from ChatbotWebsite.models import ChatMessage
-
+  
 chatbot = Blueprint("chatbot", __name__)
 
 
