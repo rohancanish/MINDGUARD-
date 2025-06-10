@@ -1,5 +1,5 @@
 
-# MINDGUARD -Mental-Health-Chatbot
+# MINDGUARD 🧠 - Mental-Health-Chatbot
 
 
 AIM: This is built to educate users with the correct knowledge of mental health and also provide some functions to improve mental health ***(NOT DIAGNOSIS)***.
@@ -43,6 +43,3 @@ python run.py
 - TensorFlow and NLTK for the machine learning model
 - Other Library like Flask-login, Flask-bcrypt
 
-# MINDGUARD-
-This is my personal project MindGuard  🧠  -  A mental health chatbot 
- 
