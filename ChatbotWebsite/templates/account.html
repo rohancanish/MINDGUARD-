@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
-    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
     min-height: 100vh;
   }
@@ -10,13 +11,24 @@
     max-width: 1200px;
     margin: 3rem auto;
     padding: 0 1rem;
+    animation: fadeIn 1s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   .profile-card {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     padding: 2rem;
     margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   }
   .profile-image {
     height: 180px;
@@ -28,16 +40,17 @@
     transition: transform 0.3s ease;
   }
   .profile-image:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
   }
   .profile-info {
     padding-left: 2rem;
   }
   .profile-username {
-    font-family: 'Merriweather', serif;
+    font-family: 'Poppins', sans-serif;
     color: #0d6efd;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 600;
   }
   .profile-email {
     color: #2c3e50;
@@ -45,18 +58,25 @@
     margin-bottom: 1.5rem;
   }
   .account-form {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .account-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   }
   .form-title {
-    font-family: 'Merriweather', serif;
+    font-family: 'Poppins', sans-serif;
     color: #0d6efd;
     font-size: 2rem;
     border-bottom: 2px solid #0dcaf0;
     padding-bottom: 0.5rem;
     margin-bottom: 2rem;
+    font-weight: 600;
   }
   .form-label {
     font-weight: 600;
@@ -85,15 +105,18 @@
   }
   .modal-content {
     border-radius: 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
   }
   .modal-header {
     border-bottom: 1px solid #0dcaf0;
     padding: 1.5rem;
   }
   .modal-title {
-    font-family: 'Merriweather', serif;
+    font-family: 'Poppins', sans-serif;
     color: #0d6efd;
+    font-weight: 600;
   }
   .modal-body {
     padding: 1.5rem;
@@ -203,9 +226,9 @@
         Are you sure you want to delete your account? This action cannot be undone.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-account" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <form action="{{ url_for('users.delete_account') }}" method="POST">
-          <button type="submit" class="btn btn-danger btn-account">Delete</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </div>
     </div>

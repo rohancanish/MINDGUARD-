@@ -6,10 +6,8 @@ import os
 class Config:
     DEBUG = False
     SECRET_KEY = os.environ.get("SECRET_KEY", "devsecretkey")
-    # Use PostgreSQL on Render, fallback to SQLite for local development
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///users.db')
-    if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
-        SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
+    # Use SQLite for Vercel deployment
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///users.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 587
