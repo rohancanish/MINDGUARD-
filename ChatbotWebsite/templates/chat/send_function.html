@@ -6,7 +6,7 @@
   const msgerChat = get(".main-chat");
 
   //images and name for bot and user
-  const BOT_IMG = "static/images/chatbot.png";
+  const BOT_IMG = "static/images/mentalhealthlogo.png";
   const BOT_NAME = "Mental Health Chatbot";
   const USER_NAME = "You";
   let image_file = $("#message-form").attr("image_file");
@@ -30,59 +30,22 @@
     });
   });
 
-  function responseTopic(rawTitle) {
-    // post request for topic, bot will response with the content of the topic
-    event.preventDefault();
-    $.ajax({
-      data: {
-        title: rawTitle,
-      },
-      type: "POST",
-      url: "/topic",
-    }).done(function (data) {
-      const msgContent = data.contents;
-      if (msgContent.length == 1) {
-        appendMessage(USER_NAME, USER_IMG, "right", rawTitle);
-        appendMessage(BOT_NAME, BOT_IMG, "left", msgContent);
-      } else {
-        appendMessage(USER_NAME, USER_IMG, "right", rawTitle);
-        msgContent.forEach((msgContent, i) => {
-          setTimeout(function () {
-            appendMessage(BOT_NAME, BOT_IMG, "left", msgContent);
-          }, i * 8000);
-        });
-      }
-    });
+  function responseTopic(topic) {
+    const textInput = document.getElementById('textInput');
+    textInput.value = `Tell me about ${topic}`;
+    document.getElementById('message-form').dispatchEvent(new Event('submit'));
   }
 
-  function responseTest(test_title){
-    //post request for test, bot will response with the selected test
-    event.preventDefault();
-    $.ajax({
-      data: {
-        title: test_title,
-      },
-      type: "POST",
-      url: "/test",
-    }).done(function (data) {
-      appendMessage(USER_NAME, USER_IMG, "right", test_title);
-      appendTest(BOT_NAME, BOT_IMG, "left", data.questions, test_title);
-    });
+  function responseTest(test) {
+    const textInput = document.getElementById('textInput');
+    textInput.value = `I want to take the ${test}`;
+    document.getElementById('message-form').dispatchEvent(new Event('submit'));
   }
 
-  function responseExercise(exercise_title){
-    //post request for exercise, bot will response with the selected mindfulness exercise
-    event.preventDefault();
-    $.ajax({
-      data: {
-        title: exercise_title,
-      },
-      type: "POST",
-      url: "/mindfulness",
-    }).done(function (data) {
-      appendMessage(USER_NAME, USER_IMG, "right", exercise_title);
-      appendExercise(BOT_NAME, BOT_IMG, "left", data.description, data.file_name);
-    });
+  function responseExercise(exercise) {
+    const textInput = document.getElementById('textInput');
+    textInput.value = `Guide me through ${exercise}`;
+    document.getElementById('message-form').dispatchEvent(new Event('submit'));
   }
 
   function appendMessage(name, img, side, text) {
